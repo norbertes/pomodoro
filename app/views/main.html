@@ -2,9 +2,7 @@
   <div class="timer">
     <span>{{formatCounter(counter)}}</span>
   </div>
-  <button type="button" class="btn btn-default btn-lg js-startbutton"
-  ng-init="isActive = false"
-  ng-click="toggleCounter(); isActive = !isActive">
+  <button type="button" class="btn btn-default btn-lg js-startbutton" ng-click="toggleCounter();">
     <span class="glyphicon" ng-class="{'glyphicon-play': !isActive, 'glyphicon-pause': isActive}"></span>
   </button>
 </div>
