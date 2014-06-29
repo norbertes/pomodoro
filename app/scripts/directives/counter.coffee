@@ -29,6 +29,7 @@ angular.module('pomodoroApp')
 			setAction = () ->
 				# stop()
 				$scope.toggleCounter()
+				playSound()
 				work = !work
 				if work
 					$scope.counter = $scope.pomodoroTime
@@ -48,11 +49,10 @@ angular.module('pomodoroApp')
 					setAction()
 
 
-			playsound = ->
-				true
+			playSound = ->
 				# if !$scope.mute
-				# snd = new Audio("../sounds/chew_roar2.mp3")
-				# snd.play()
+				snd = new Audio("../sounds/success.wav")
+				snd.play()
 
 			$scope.formatCounter = (val) ->
 				mins = Math.floor val/60
