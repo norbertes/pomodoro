@@ -16,10 +16,22 @@ angular.module('pomodoroApp')
 			$scope.shortBreak = 60*5	# Czas trwania krótkiej przerwy
 			$scope.longBreak = 60*25	# Czas trwania długiej przerwy
 			$scope.counter 	= $scope.pomodoroTime	# Czas na liczniku (init = czas pomodoro)
-			$scope.isActive = false		# Czy zegrar chodzi
+			$scope.isActive = true		# Czy zegrar chodzi
 			$scope.timeTable = []		# Tabela z datami zakończeń pomodoro
 			mytimeout = false			# Zmienna do countera
 			work = true 				# work = true, break = false
+
+			# btn-warning - na pauzie
+			# btn-primary - na normalnym czasie
+			# btn-success - przed przerwa
+			setButton = (val) ->
+				if val is 1
+					btnClass = 'btn-primary'
+				else if val is 2
+					btnClass = 'btn-success'
+				else if val is 3
+					btnClass = 'btn-warning'
+				$('.js-startbutton').removeClass('btn-primary btn-success btn-warning').addClass btnClass
 
 			# Zatrzymanie odliczania
 			stop = () ->
@@ -32,9 +44,11 @@ angular.module('pomodoroApp')
 				playSound()
 				work = !work
 				if work
+					setButton 2
 					$scope.counter = $scope.pomodoroTime
 				else
 					$scope.timeTable.push Date.now()
+					setButton 1
 					if $scope.timeTable.length % 4 is 0
 						$scope.counter = $scope.longBreak
 					else
@@ -51,7 +65,7 @@ angular.module('pomodoroApp')
 
 			playSound = ->
 				# if !$scope.mute
-				snd = new Audio("../sounds/success.wav")
+				snd = new Audio '../sounds/success.wav'
 				snd.play()
 
 			$scope.formatCounter = (val) ->
@@ -61,10 +75,15 @@ angular.module('pomodoroApp')
 				mins + ':' + secs
 
 			$scope.toggleCounter = () ->
-				if !$scope.isActive
+				if $scope.isActive
 					$scope.$emit 'counterStart'
+					setButton 2
 					countDown()
 				else
 					$scope.$emit 'counterStop'
+					setButton 3
 					stop()
 				$scope.isActive = !$scope.isActive
+
+			setButton 2
+
