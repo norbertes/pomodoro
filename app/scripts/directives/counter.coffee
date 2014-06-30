@@ -18,6 +18,7 @@ angular.module('pomodoroApp')
 			$scope.counter 	= $scope.pomodoroTime	# Czas na liczniku (init = czas pomodoro)
 			$scope.isActive = true		# Czy zegrar chodzi
 			$scope.timeTable = []		# Tabela z datami zakończeń pomodoro
+			$scope.volume = 0.75		# Głośność
 			mytimeout = false			# Zmienna do countera
 			work = true 				# work = true, break = false
 
@@ -62,10 +63,10 @@ angular.module('pomodoroApp')
 				else
 					setAction()
 
-
 			playSound = ->
-				# if !$scope.mute
+				# unless $scope.volume
 				snd = new Audio '../sounds/success.wav'
+				snd.volume = $scope.volume
 				snd.play()
 
 			$scope.formatCounter = (val) ->
