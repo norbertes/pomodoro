@@ -31,6 +31,8 @@ angular.module('pomodoroApp')
 			# btn-warning - na pauzie
 			# btn-primary - na normalnym czasie
 			# btn-success - przed przerwa
+			#
+			# Deprecated
 			setButton = (val) ->
 				if val is 1
 					btnClass = 'btn-primary'
@@ -39,6 +41,16 @@ angular.module('pomodoroApp')
 				else if val is 3
 					btnClass = 'btn-warning'
 				$('.js-startbutton').removeClass('btn-primary btn-success btn-warning').addClass btnClass
+
+			setBackground = (val) ->
+				if val is 1
+					bgColor = '#428bca'
+				else if val is 2
+					bgColor = '#449d44'
+				else if val is 3
+					bgColor = '#ec971f'
+
+				$('body').css 'background',bgColor
 
 			# Zatrzymanie odliczania
 			stop = () ->
@@ -51,11 +63,14 @@ angular.module('pomodoroApp')
 				playSound()
 				work = !work
 				if work
-					setButton 2
+					# console.log $scope.timeTable.length
+					# if $scope.timeTable.length % 4 is 0 then brk = 'longbreak' else brk = 'break'
+					# $scope.timeTable.push {date: Date.now(), type: 'break'}
+					setBackground 2
 					$scope.counter = $scope.pomodoroTime
 				else
-					$scope.timeTable.push Date.now()
-					setButton 1
+					$scope.timeTable.push {date: Date.now(), type: 'work'}
+					setBackground 1
 					if $scope.timeTable.length % 4 is 0
 						$scope.counter = $scope.longBreak
 					else
@@ -87,17 +102,17 @@ angular.module('pomodoroApp')
 			$scope.toggleCounter = () ->
 				if $scope.isActive
 					$scope.$emit 'counterStart'
-					setButton 2
+					if work is true then setBackground(2) else setBackground(1)
 					countDown()
 				else
 					$scope.$emit 'counterStop'
-					setButton 3
+					setBackground 3
 					stop()
 				$scope.isActive = !$scope.isActive
 
 			#
 			$scope.initializeWindowSize()
-			setButton 2
+			setBackground 2
 
 			angular.element($window).bind 'resize', ->
 				$scope.initializeWindowSize()

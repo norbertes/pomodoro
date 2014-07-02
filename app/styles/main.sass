@@ -2,7 +2,6 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 
 // bower:scss
 @import bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss
-
 // endbower
 
 /* Space out content a bit */
@@ -12,10 +11,15 @@ html
 body
 	height: 100%
 	background: rgb(65, 65, 65)
+	+transition-property(background-color)
+	+transition-duration(650ms)
+	+transition-timing-function(ease-out)
 
 h1
 	font-size: 6em
-	color: rgb(192, 192, 191)
+	// color: rgb(192, 192, 191)
+	color: #FFF
+	padding-bottom: .1em
 	font-family: 'Lato', sans-serif
 
 .wrapper
@@ -31,3 +35,20 @@ h1
 	vertical-align: middle
 	cursor: pointer
 
+.counter-button
+	width: 3em
+	height: 3em
+	font-size: 2em
+	outline: none
+	background-color: rgba(255,255,255,.2)
+	color: #FFF
+	&:hover,
+	&:focus,
+	&:active,
+	&:active:focus
+		outline: none
+		color: #FFF
+
+.navbar-inverse
+	background-color: rgba(0,0,0,.25)
+	border-color: rgba(0,0,0,.125)

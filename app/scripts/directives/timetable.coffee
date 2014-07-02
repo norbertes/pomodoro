@@ -17,3 +17,10 @@ angular.module('pomodoroApp')
 				console.log "start: #{$scope.timeTable.length}"
 			$scope.$on 'counterStop', ->
 				console.log "stop: #{$scope.timeTable.length}"
+			$scope.$watchCollection 'timeTable', (newCol) ->
+				allPos = ''
+				console.log "newCol: #{JSON.stringify newCol}"
+				newCol.map (pos) =>
+					console.log 'pos: ' + JSON.stringify pos
+					allPos += pos.type + ', '
+				$('.js-timetable').html allPos
