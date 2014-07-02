@@ -11,7 +11,7 @@ angular.module('pomodoroApp')
 		templateUrl: 'views/main.html'
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
-		controller: ($scope, $timeout) ->
+		controller: ($scope, $timeout, $window) ->
 			$scope.pomodoroTime = 60*25	# Czas trwania pomodoro
 			$scope.shortBreak = 60*5	# Czas trwania krótkiej przerwy
 			$scope.longBreak = 60*25	# Czas trwania długiej przerwy
@@ -21,6 +21,12 @@ angular.module('pomodoroApp')
 			$scope.volume = 0.75		# Głośność
 			mytimeout = false			# Zmienna do countera
 			work = true 				# work = true, break = false
+
+			# resize okna
+			$scope.initializeWindowSize = ->
+				$scope.windowHeight = $window.innerHeight
+				$scope.windowWidth  = $window.innerWidth
+				$scope.paddingTop = $window.innerHeight * 0.2
 
 			# btn-warning - na pauzie
 			# btn-primary - na normalnym czasie
@@ -63,18 +69,21 @@ angular.module('pomodoroApp')
 				else
 					setAction()
 
+			# Odtwarzanie dźwięku
 			playSound = ->
-				# unless $scope.volume
-				snd = new Audio '../sounds/success.wav'
-				snd.volume = $scope.volume
-				snd.play()
+				unless $scope.volume
+					snd = new Audio '../sounds/success.wav'
+					snd.volume = $scope.volume
+					snd.play()
 
+			# Metoda do formatowania godziny w liczniku
 			$scope.formatCounter = (val) ->
 				mins = Math.floor val/60
 				secs = val - mins * 60
 				if secs < 10 then secs = '0' + secs
 				mins + ':' + secs
 
+			# Włącznik / wyłącznik licznika
 			$scope.toggleCounter = () ->
 				if $scope.isActive
 					$scope.$emit 'counterStart'
@@ -86,5 +95,11 @@ angular.module('pomodoroApp')
 					stop()
 				$scope.isActive = !$scope.isActive
 
+			#
+			$scope.initializeWindowSize()
 			setButton 2
+
+			angular.element($window).bind 'resize', ->
+				$scope.initializeWindowSize()
+				$scope.$apply()
 
