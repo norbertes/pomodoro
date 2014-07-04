@@ -31,8 +31,7 @@ angular.module('pomodoroApp')
 			# btn-warning - na pauzie
 			# btn-primary - na normalnym czasie
 			# btn-success - przed przerwa
-			#
-			# Deprecated
+
 			setButton = (val) ->
 				if val is 1
 					btnClass = 'btn-primary'
@@ -52,6 +51,26 @@ angular.module('pomodoroApp')
 
 				$('body').css 'background',bgColor
 
+			setNotification = (val) ->
+				if val is 1
+					notify = new Notify 'Pomodoro',
+						body: 'Czas na przerwę!'
+						icon: 'images/tomato.jpeg'
+						timeout: 10
+					.show()
+				else if val is 2
+					notify = new Notify 'Pomodoro',
+						body: 'Koniec przerwy!'
+						icon: 'images/tomato.jpeg'
+						timeout: 10
+					.show()
+				else if val is 3
+					notify = new Notify 'Pomodoro',
+						body: 'Alert!'
+						icon: 'images/tomato.jpeg'
+						timeout: 10
+					.show()
+
 			# Zatrzymanie odliczania
 			stop = () ->
 				$timeout.cancel mytimeout
@@ -67,14 +86,17 @@ angular.module('pomodoroApp')
 					# if $scope.timeTable.length % 4 is 0 then brk = 'longbreak' else brk = 'break'
 					# $scope.timeTable.push {date: Date.now(), type: 'break'}
 					setBackground 2
+					setNotification 2
 					$scope.counter = $scope.pomodoroTime
 				else
 					$scope.timeTable.push {date: Date.now(), type: 'work'}
 					setBackground 1
 					if $scope.timeTable.length % 4 is 0
 						$scope.counter = $scope.longBreak
+						setNotification 1
 					else
 						$scope.counter = $scope.shortBreak
+						setNotification 1
 
 			# Odliczanie
 			countDown = () ->
