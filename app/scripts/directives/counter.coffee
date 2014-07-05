@@ -12,9 +12,9 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
-			$scope.pomodoroTime = 60*25	# Pomodoro work time
-			$scope.shortBreak = 60*5	# Short break time
-			$scope.longBreak = 60*25	# Long break time
+			$scope.pomodoroTime = 2#60*25	# Pomodoro work time
+			$scope.shortBreak = 2#60*5	# Short break time
+			$scope.longBreak = 2#60*25	# Long break time
 			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
 			$scope.isActive = true		# If counter running?
 			$scope.timeTable = []		# Table for times of finish every block
@@ -36,11 +36,10 @@ angular.module('pomodoroApp')
 			# Show notification
 			showNotification = (val) ->
 				if val is 1
-					cnt = $scope.timeTable.filter (val) -> val.type is 'break'
-					if cnt.length % 4 is 0
-						pic = 'images/dinner.png'
-					else
+					if isShortBreak()
 						pic = 'images/coffee.png'
+					else
+						pic = 'images/dinner.png'
 					notify = new Notify 'Pomodoro',
 						body: 'Czas na przerwę!'
 						icon: pic
@@ -93,12 +92,11 @@ angular.module('pomodoroApp')
 				else
 					pushTimeTable 'work'
 					setBackground 1
-					cnt = $scope.timeTable.filter (val) -> val.type is 'work'
-					if cnt.length % 4 is 0
-						$scope.counter = $scope.longBreak
+					if isShortBreak()
+						$scope.counter = $scope.shortBreak
 						showNotification 1
 					else
-						$scope.counter = $scope.shortBreak
+						$scope.counter = $scope.longBreak
 						showNotification 1
 
 			# Counter
@@ -115,6 +113,15 @@ angular.module('pomodoroApp')
 					snd = new Audio '../sounds/success.wav'
 					snd.volume = $scope.volume
 					snd.play()
+
+			#
+			isShortBreak = ->
+				console.log 'isShortBreak'
+				cnt = $scope.timeTable.filter (val) -> val.type is 'work'
+				if cnt.length % 4 isnt 0
+					return true
+				else
+					return false
 
 			# Keep full window size
 			$scope.initializeWindowSize = ->

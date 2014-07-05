@@ -8,6 +8,11 @@
  #
  # Main module of the application.
 ###
+
+# Trzymać w localstorage stan pomodoro dla danego dnia
+# Dodać settingsy
+# Usuąć JQuery
+
 angular
   .module('pomodoroApp', [
     'ngAnimate',
