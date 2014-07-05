@@ -12,9 +12,9 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
-			$scope.pomodoroTime = 2#60*25	# Pomodoro work time
-			$scope.shortBreak = 2#60*5	# Short break time
-			$scope.longBreak = 2#60*25	# Long break time
+			$scope.pomodoroTime = 60*25	# Pomodoro work time
+			$scope.shortBreak = 60*5	# Short break time
+			$scope.longBreak = 60*25	# Long break time
 			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
 			$scope.isActive = true		# If counter running?
 			$scope.timeTable = []		# Table for times of finish every block
