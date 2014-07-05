@@ -12,9 +12,9 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
-			$scope.pomodoroTime = 60*25	# Pomodoro work time
-			$scope.shortBreak = 60*5	# Short break time
-			$scope.longBreak = 60*25	# Long break time
+			$scope.pomodoroTime = 2#60*25	# Pomodoro work time
+			$scope.shortBreak = 2#60*5	# Short break time
+			$scope.longBreak = 2#60*25	# Long break time
 			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
 			$scope.isActive = true		# If counter running?
 			$scope.timeTable = []		# Table for times of finish every block
@@ -63,6 +63,15 @@ angular.module('pomodoroApp')
 			stop = () ->
 				$timeout.cancel mytimeout
 
+			pushTimeTable = (val) ->
+				console.log 'pushTimeTable'
+				if val is 'work'
+					$scope.timeTable.push {date: Date.now(), type: 'work'}
+					$scope.$emit 'addWork'
+				else
+					$scope.timeTable.push {date: Date.now(), type: 'break'}
+					$scope.$emit 'addBreak'
+
 			# When counter comes to 0, set new action
 			setAction = () ->
 				# stop()
@@ -72,14 +81,15 @@ angular.module('pomodoroApp')
 				if work
 					# console.log $scope.timeTable.length
 					# if $scope.timeTable.length % 4 is 0 then brk = 'longbreak' else brk = 'break'
-					# $scope.timeTable.push {date: Date.now(), type: 'break'}
+					pushTimeTable 'break'
 					setBackground 2
 					showNotification 2
 					$scope.counter = $scope.pomodoroTime
 				else
-					$scope.timeTable.push {date: Date.now(), type: 'work'}
+					pushTimeTable 'work'
 					setBackground 1
-					if $scope.timeTable.length % 4 is 0
+					cnt = $scope.timeTable.filter (val) -> val.type is 'work'
+					if cnt.length % 4 is 0
 						$scope.counter = $scope.longBreak
 						showNotification 1
 					else

@@ -13,14 +13,33 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'timeTableCtrl'
 		controller: ($scope) ->
+
+			addToTimetable = (type) ->
+				if type is 'work'
+					pic = '../../images/pomodoro.jpg'
+				else
+					cnt = $scope.timeTable.filter (val) -> val.type is 'break'
+					if cnt.length % 4 is 0
+						pic = '../../images/dinner.png'
+					else
+						pic = '../../images/coffeeicon.png'
+				div = '<div class="icon-pos"><img src="'+pic+'" /></div>'
+				$('.js-timetable').append div
+
 			$scope.$on 'counterStart', ->
 				console.log "start: #{$scope.timeTable.length}"
+
 			$scope.$on 'counterStop', ->
 				console.log "stop: #{$scope.timeTable.length}"
-			$scope.$watchCollection 'timeTable', (newCol) ->
-				allPos = ''
-				console.log "newCol: #{JSON.stringify newCol}"
-				newCol.map (pos) =>
-					console.log 'pos: ' + JSON.stringify pos
-					allPos += pos.type + ', '
-				$('.js-timetable').html allPos
+
+			$scope.$on 'addWork', ->
+				addToTimetable 'work'
+
+			$scope.$on 'addBreak', ->
+				addToTimetable 'break'
+
+			# $scope.$watchCollection 'timeTable', (arr) ->
+			# 	allPos = ''
+			# 	arr.map (pos) =>
+			# 		allPos += pos.type + ', '
+			# 	$('.js-timetable').html allPos
