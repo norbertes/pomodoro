@@ -12,35 +12,17 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
-			$scope.pomodoroTime = 60*25	# Czas trwania pomodoro
-			$scope.shortBreak = 60*5	# Czas trwania krótkiej przerwy
-			$scope.longBreak = 60*25	# Czas trwania długiej przerwy
-			$scope.counter 	= $scope.pomodoroTime	# Czas na liczniku (init = czas pomodoro)
-			$scope.isActive = true		# Czy zegrar chodzi
-			$scope.timeTable = []		# Tabela z datami zakończeń pomodoro
-			$scope.volume = 0.75		# Głośność
-			mytimeout = false			# Zmienna do countera
+			$scope.pomodoroTime = 60*25	# Pomodoro work time
+			$scope.shortBreak = 60*5	# Short break time
+			$scope.longBreak = 60*25	# Long break time
+			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
+			$scope.isActive = true		# If counter running?
+			$scope.timeTable = []		# Table for times of finish every block
+			$scope.volume = 0.75		# Notifications volume
+			mytimeout = false			# Helper for counter
 			work = true 				# work = true, break = false
 
-			# resize okna
-			$scope.initializeWindowSize = ->
-				$scope.windowHeight = $window.innerHeight
-				$scope.windowWidth  = $window.innerWidth
-				$scope.paddingTop = $window.innerHeight * 0.2
-
-			# btn-warning - na pauzie
-			# btn-primary - na normalnym czasie
-			# btn-success - przed przerwa
-
-			setButton = (val) ->
-				if val is 1
-					btnClass = 'btn-primary'
-				else if val is 2
-					btnClass = 'btn-success'
-				else if val is 3
-					btnClass = 'btn-warning'
-				$('.js-startbutton').removeClass('btn-primary btn-success btn-warning').addClass btnClass
-
+			# Change backgroun color
 			setBackground = (val) ->
 				if val is 1
 					bgColor = '#428bca'
@@ -51,7 +33,8 @@ angular.module('pomodoroApp')
 
 				$('body').css 'background',bgColor
 
-			setNotification = (val) ->
+			# Show notification
+			showNotification = (val) ->
 				if val is 1
 					notify = new Notify 'Pomodoro',
 						body: 'Czas na przerwę!'
@@ -71,11 +54,16 @@ angular.module('pomodoroApp')
 						timeout: 10
 					.show()
 
-			# Zatrzymanie odliczania
+			# Permisin for system notifiactions
+			requestNotificationPermission = () ->
+				if Notify.needsPermission() and Notify.isSupported()
+					Notify.requestPermission()
+
+			# Stop counter
 			stop = () ->
 				$timeout.cancel mytimeout
 
-			# Ustawienie kolejnego pomodoro
+			# When counter comes to 0, set new action
 			setAction = () ->
 				# stop()
 				$scope.toggleCounter()
@@ -86,19 +74,19 @@ angular.module('pomodoroApp')
 					# if $scope.timeTable.length % 4 is 0 then brk = 'longbreak' else brk = 'break'
 					# $scope.timeTable.push {date: Date.now(), type: 'break'}
 					setBackground 2
-					setNotification 2
+					showNotification 2
 					$scope.counter = $scope.pomodoroTime
 				else
 					$scope.timeTable.push {date: Date.now(), type: 'work'}
 					setBackground 1
 					if $scope.timeTable.length % 4 is 0
 						$scope.counter = $scope.longBreak
-						setNotification 1
+						showNotification 1
 					else
 						$scope.counter = $scope.shortBreak
-						setNotification 1
+						showNotification 1
 
-			# Odliczanie
+			# Counter
 			countDown = () ->
 				$scope.counter--
 				if $scope.counter > 0
@@ -106,22 +94,29 @@ angular.module('pomodoroApp')
 				else
 					setAction()
 
-			# Odtwarzanie dźwięku
+			# Play sound
 			playSound = ->
 				unless $scope.volume
 					snd = new Audio '../sounds/success.wav'
 					snd.volume = $scope.volume
 					snd.play()
 
-			# Metoda do formatowania godziny w liczniku
+			# Keep full window size
+			$scope.initializeWindowSize = ->
+				$scope.windowHeight = $window.innerHeight
+				$scope.windowWidth  = $window.innerWidth
+				$scope.paddingTop = $window.innerHeight * 0.2
+
+			# Format timestamp to nice date format
 			$scope.formatCounter = (val) ->
 				mins = Math.floor val/60
 				secs = val - mins * 60
 				if secs < 10 then secs = '0' + secs
 				mins + ':' + secs
 
-			# Włącznik / wyłącznik licznika
+			# On / Off counter
 			$scope.toggleCounter = () ->
+				requestNotificationPermission()
 				if $scope.isActive
 					$scope.$emit 'counterStart'
 					if work is true then setBackground(2) else setBackground(1)
