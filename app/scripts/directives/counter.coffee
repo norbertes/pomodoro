@@ -12,9 +12,9 @@ angular.module('pomodoroApp')
 		restrict: 'E'
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
-			$scope.pomodoroTime = 60*25	# Pomodoro work time
-			$scope.shortBreak = 60*5	# Short break time
-			$scope.longBreak = 60*25	# Long break time
+			$scope.pomodoroTime = 2#60*25	# Pomodoro work time
+			$scope.shortBreak = 2#60*5	# Short break time
+			$scope.longBreak = 2#60*25	# Long break time
 			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
 			$scope.isActive = true		# If counter running?
 			$scope.timeTable = []		# Table for times of finish every block
@@ -36,21 +36,26 @@ angular.module('pomodoroApp')
 			# Show notification
 			showNotification = (val) ->
 				if val is 1
+					cnt = $scope.timeTable.filter (val) -> val.type is 'break'
+					if cnt.length % 4 is 0
+						pic = 'images/dinner.png'
+					else
+						pic = 'images/coffee.png'
 					notify = new Notify 'Pomodoro',
 						body: 'Czas na przerwę!'
-						icon: 'images/tomato.jpeg'
+						icon: pic
 						timeout: 10
 					.show()
 				else if val is 2
 					notify = new Notify 'Pomodoro',
 						body: 'Koniec przerwy!'
-						icon: 'images/tomato.jpeg'
+						icon: 'images/pomodoro.png'
 						timeout: 10
 					.show()
 				else if val is 3
 					notify = new Notify 'Pomodoro',
 						body: 'Alert!'
-						icon: 'images/tomato.jpeg'
+						icon: 'images/pomodoro.png'
 						timeout: 10
 					.show()
 

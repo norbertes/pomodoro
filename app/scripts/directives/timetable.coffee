@@ -15,15 +15,17 @@ angular.module('pomodoroApp')
 		controller: ($scope) ->
 
 			addToTimetable = (type) ->
+				pt1px = ''
 				if type is 'work'
-					pic = '../../images/pomodoro.jpg'
+					pic = 'images/pomodoro.png'
+					pt1px = ' style="padding-top:1px;"'
 				else
 					cnt = $scope.timeTable.filter (val) -> val.type is 'break'
 					if cnt.length % 4 is 0
-						pic = '../../images/dinner.png'
+						pic = 'images/dinner.png'
 					else
-						pic = '../../images/coffeeicon.png'
-				div = '<div class="icon-pos"><img src="'+pic+'" /></div>'
+						pic = 'images/coffee.png'
+				div = '<div class="icon-pos" '+pt1px+'><img src="'+pic+'" /></div>'
 				$('.js-timetable').append div
 
 			$scope.$on 'counterStart', ->
