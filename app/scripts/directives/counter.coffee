@@ -109,7 +109,7 @@ angular.module('pomodoroApp')
 
 			# Play sound
 			playSound = ->
-				unless $scope.volume
+				if $scope.volume
 					snd = new Audio '../sounds/success.wav'
 					snd.volume = $scope.volume
 					snd.play()
