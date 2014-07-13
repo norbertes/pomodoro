@@ -13,14 +13,14 @@ angular.module('pomodoroApp')
 		controllerAs: 'CounterCtrl'
 		controller: ($scope, $timeout, $window) ->
 			$scope.pomodoroTime = 60*25	# Pomodoro work time
-			$scope.shortBreak = 60*5	# Short break time
-			$scope.longBreak = 60*25	# Long break time
-			$scope.counter 	= $scope.pomodoroTime	# Counter value (init = pomodoros work time)
-			$scope.isActive = true		# If counter running?
-			$scope.timeTable = []		# Table for times of finish every block
-			$scope.volume = 0.75		# Notifications volume
-			mytimeout = false			# Helper for counter
-			work = true 				# work = true, break = false
+			$scope.shortBreak = 60*5 # Short break time
+			$scope.longBreak = 60*25 # Long break time
+			$scope.counter 	= $scope.pomodoroTime # Counter value (init = pomodoros work time)
+			$scope.isActive = true # If counter running?
+			$scope.timeTable = [] # Table for times of finish every block
+			$scope.volume = 0.75 # Notifications volume
+			mytimeout = false # Helper for counter
+			work = true # work = true, break = false
 
 			# Change backgroun color
 			setBackground = (val) ->
@@ -59,12 +59,12 @@ angular.module('pomodoroApp')
 					.show()
 
 			# Permisin for system notifiactions
-			requestNotificationPermission = () ->
+			requestNotificationPermission = ->
 				if Notify.needsPermission() and Notify.isSupported()
 					Notify.requestPermission()
 
 			# Stop counter
-			stop = () ->
+			stop = ->
 				$timeout.cancel mytimeout
 
 			pushTimeTable = (val) ->
@@ -77,7 +77,7 @@ angular.module('pomodoroApp')
 					$scope.$emit 'addBreak'
 
 			# When counter comes to 0, set new action
-			setAction = () ->
+			setAction = ->
 				# stop()
 				$scope.toggleCounter()
 				playSound()
@@ -100,7 +100,7 @@ angular.module('pomodoroApp')
 						showNotification 1
 
 			# Counter
-			countDown = () ->
+			countDown = ->
 				$scope.counter--
 				if $scope.counter > 0
 					mytimeout = $timeout countDown,1000
@@ -117,7 +117,8 @@ angular.module('pomodoroApp')
 			#
 			isShortBreak = ->
 				console.log 'isShortBreak'
-				cnt = $scope.timeTable.filter (val) -> val.type is 'work'
+				cnt = $scope.timeTable.filter (val) ->
+					val.type is 'work'
 				if cnt.length % 4 isnt 0
 					return true
 				else
@@ -127,7 +128,11 @@ angular.module('pomodoroApp')
 			$scope.initializeWindowSize = ->
 				$scope.windowHeight = $window.innerHeight
 				$scope.windowWidth  = $window.innerWidth
-				$scope.paddingTop = $window.innerHeight * 0.2
+				if $window.innerHeight > 400
+					ratio = 0.2
+				else
+					ratio = 0.1
+				$scope.paddingTop = $window.innerHeight * ratio
 
 			# Format timestamp to nice date format
 			$scope.formatCounter = (val) ->
@@ -137,7 +142,7 @@ angular.module('pomodoroApp')
 				mins + ':' + secs
 
 			# On / Off counter
-			$scope.toggleCounter = () ->
+			$scope.toggleCounter = ->
 				requestNotificationPermission()
 				if $scope.isActive
 					$scope.$emit 'counterStart'

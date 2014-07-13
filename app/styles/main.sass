@@ -3,7 +3,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 // bower:scss
 @import bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss
 // endbower
-
+@import "compass/css3/transform"
+@import "compass/css3/transition"
 /* Space out content a bit */
 html
 	height: 100%
@@ -22,19 +23,12 @@ h1
 	padding-bottom: .1em
 	font-family: 'Lato', sans-serif
 
-.wrapper
-	position: absolute
-	left: 50%
-
 .counter
 	display: block
-	top: -50%
-	left: -50%
 	position: relative
 	text-align: center
 	vertical-align: middle
 	cursor: pointer
-
 .counter-button
 	width: 3em
 	height: 3em
@@ -51,11 +45,36 @@ h1
 
 .navbar
 	min-height: 40px
-
 .navbar-inverse
 	background-color: rgba(0,0,0,.25)
 	border-color: rgba(0,0,0,.125)
 	height: 40px
+
+.settings
+	width: 15em
+	background: rgba(0,0,0,.4)
+	float: left
+	display: block
+	@include translate(-15em, 0)
+	+transition-property(translate)
+	+transition-duration(400ms)
+	+transition-timing-function(ease-in-out)
+.settings-rolled
+	@include translate(0em, 0)
+.settings-ico
+	font-size: 3em
+	color: white
+	position: absolute
+	top: .5em
+	left: .5em
+
+.wrapper
+	@include translate(0em, 0)
+	+transition-property(translate)
+	+transition-duration(400ms)
+	+transition-timing-function(ease-in-out)
+.wrapper-rolled
+	@include translate(15em, 0)
 
 .icon-pos
 	float: left
