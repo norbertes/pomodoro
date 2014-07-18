@@ -3,7 +3,18 @@
 </div>
 <div class="settings">
 	<div class="input-group input-group-lg">
-	  <span class="input-group-addon">Volume</span>
-	  <input type="text" class="form-control" placeholder="Volume">
+		<h2>Settings</h2>
+		<div>
+	  		<h3>Volume</h3>
+	  		<span class="min">0</span>
+	  		<input type="range" name="volume" min="0" max="100" step="1" value="75" ng-model="volume">
+	  		<span class="max">100</span>
+		</div>
+		<div>
+			<h3>Work Background</h3>
+			<div class="bgWrap bgcolor1" ng-click="setBgColor('#12538B')"></div>
+			<div class="bgWrap bgcolor2" ng-click="setBgColor('#449d44')"></div>
+			<div class="bgWrap bgcolor3" ng-click="setBgColor('#414141')"></div>
+		</div>
 	</div>
 </div>

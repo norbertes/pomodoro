@@ -28,12 +28,6 @@ angular.module('pomodoroApp')
 				div = '<div class="icon-pos" '+pt1px+'><img src="'+pic+'" /></div>'
 				$('.js-timetable').append div
 
-			$scope.$on 'counterStart', ->
-				console.log "start: #{$scope.timeTable.length}"
-
-			$scope.$on 'counterStop', ->
-				console.log "stop: #{$scope.timeTable.length}"
-
 			$scope.$on 'addWork', ->
 				addToTimetable 'work'
 

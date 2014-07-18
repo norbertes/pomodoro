@@ -23,6 +23,15 @@ h1
 	padding-bottom: .1em
 	font-family: 'Lato', sans-serif
 
+.bgcolor1
+	background-color: #12538B
+
+.bgcolor2
+	background-color: #449d44
+
+.bgcolor3
+	background-color: #414141
+
 .counter
 	display: block
 	position: relative
@@ -50,15 +59,54 @@ h1
 	border-color: rgba(0,0,0,.125)
 	height: 40px
 
+settings
+	display: block
+	z-index: 1
+	height: 100%
+	width: 75px
+	position: absolute
+
 .settings
 	width: 15em
+	height: 100%
 	background: rgba(0,0,0,.4)
 	float: left
 	display: block
+	color: white
 	@include translate(-15em, 0)
 	+transition-property(translate)
 	+transition-duration(400ms)
 	+transition-timing-function(ease-in-out)
+
+	h2,h3
+		text-align: center
+		width: 100%
+	div
+		width: 100%
+		float: left
+		&.bgWrap
+			width: 3.33em
+			height: 3.33em
+			border: 1px solid
+			float: left
+			margin: .75em
+			border-radius: 1em
+			cursor: pointer
+
+	// Volume slider
+	span.min,
+	span.max
+		float: left
+		width: 15%
+	span.min
+		text-align: right
+		padding-right: 5%
+	span.max
+		padding-left: 5%
+	input
+		width: 60%
+		float: left
+
 .settings-rolled
 	@include translate(0em, 0)
 .settings-ico

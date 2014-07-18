@@ -18,20 +18,26 @@ angular.module('pomodoroApp')
 			$scope.counter 	= $scope.pomodoroTime # Counter value (init = pomodoros work time)
 			$scope.isActive = true # If counter running?
 			$scope.timeTable = [] # Table for times of finish every block
-			$scope.volume = 0.75 # Notifications volume
 			mytimeout = false # Helper for counter
 			work = true # work = true, break = false
+
+			# Check if counter is running
+			$scope.$on 'stopCounter', ->
+				if not $scope.isActive then $scope.toggleCounter()
+
+			$scope.$on 'changeBg', (val) ->
+				setBackground 2
 
 			# Change backgroun color
 			setBackground = (val) ->
 				if val is 1
-					bgColor = '#428bca'
+					bgColor = '#12538B'
 				else if val is 2
-					bgColor = '#449d44'
+					bgColor = $scope.workBg
 				else if val is 3
 					bgColor = '#ec971f'
 
-				$('body').css 'background',bgColor
+				$('body').css 'background', bgColor
 
 			# Show notification
 			showNotification = (val) ->
@@ -111,7 +117,7 @@ angular.module('pomodoroApp')
 			playSound = ->
 				if $scope.volume
 					snd = new Audio '../sounds/success.wav'
-					snd.volume = $scope.volume
+					snd.volume = $scope.volume / 100
 					snd.play()
 
 			#
@@ -144,6 +150,7 @@ angular.module('pomodoroApp')
 			# On / Off counter
 			$scope.toggleCounter = ->
 				requestNotificationPermission()
+				console.log "$scope.isActive: #{$scope.isActive}"
 				if $scope.isActive
 					$scope.$emit 'counterStart'
 					if work is true then setBackground(2) else setBackground(1)
