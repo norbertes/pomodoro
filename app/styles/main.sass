@@ -17,11 +17,11 @@ body
 	+transition-timing-function(ease-out)
 
 h1
-	font-size: 6em
+	font-size: 5em
 	// color: rgb(192, 192, 191)
 	color: #FFF
 	padding-bottom: .1em
-	font-family: 'Lato', sans-serif
+	font-family: 'Lato', Helvetica, Arial, sans-serif
 
 .bgcolor1
 	background-color: #12538B
@@ -34,16 +34,21 @@ h1
 
 .counter
 	display: block
-	position: relative
+	position: absolute
 	text-align: center
 	vertical-align: middle
 	cursor: pointer
+	@include translate(-50%, -60%)
+	top: 45%
+	left: 50%
+	height: 150px
+	width: 200px
 .counter-button
-	width: 3em
-	height: 3em
+	width: 2em
+	height: 2em
 	font-size: 2em
 	outline: none
-	background-color: rgba(255,255,255,.2)
+	background-color: rgba(255,255,255,.025)
 	color: #FFF
 	&:hover,
 	&:focus,
@@ -51,6 +56,8 @@ h1
 	&:active:focus
 		outline: none
 		color: #FFF
+.timer
+	margin-bottom: 2em
 
 .navbar
 	min-height: 40px
@@ -117,10 +124,16 @@ settings
 	left: .5em
 
 .wrapper
+	height: 100%
+	width: 100%
+	position: absolute
+	vertical-align: middle
+	cursor: pointer
 	@include translate(0em, 0)
 	+transition-property(translate)
 	+transition-duration(400ms)
 	+transition-timing-function(ease-in-out)
+
 .wrapper-rolled
 	@include translate(15em, 0)
 

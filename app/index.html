@@ -12,7 +12,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link href='http://fonts.googleapis.com/css?family=Lato:400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- endbuild -->
@@ -24,8 +24,8 @@
 
     <!-- Add your site or application content here -->
     <settings></settings>
-    <div class="wrapper">
-        <counter class="counter" ng-click="toggleCounter();" style="width:{{windowWidth}}px;height:{{windowHeight}}px;padding-top: {{paddingTop}}px;"></counter>
+    <div class="wrapper" ng-click="toggleCounter();">
+        <counter class="counter" style="width:{{windowWidth}}px;height:{{windowHeight}}px;padding-top: {{paddingTop}}px;"></counter>
     </div>
     <time-table></time-table>
 

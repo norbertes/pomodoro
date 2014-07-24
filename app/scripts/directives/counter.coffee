@@ -25,17 +25,18 @@ angular.module('pomodoroApp')
 			$scope.$on 'stopCounter', ->
 				if not $scope.isActive then $scope.toggleCounter()
 
+			# Trigger background change for work time
 			$scope.$on 'changeBg', (val) ->
 				setBackground 2
 
 			# Change backgroun color
 			setBackground = (val) ->
 				if val is 1
-					bgColor = '#12538B'
+					bgColor = 'rgb(33, 90, 112)' # '#12538B'
 				else if val is 2
 					bgColor = $scope.workBg
 				else if val is 3
-					bgColor = '#ec971f'
+					bgColor = 'rgb(138, 48, 25)' #'#ec971f'
 
 				$('body').css 'background', bgColor
 
@@ -50,19 +51,20 @@ angular.module('pomodoroApp')
 						body: 'Czas na przerwę!'
 						icon: pic
 						timeout: 10
-					.show()
 				else if val is 2
 					notify = new Notify 'Pomodoro',
 						body: 'Koniec przerwy!'
 						icon: 'images/pomodoro.png'
 						timeout: 10
-					.show()
 				else if val is 3
 					notify = new Notify 'Pomodoro',
 						body: 'Alert!'
 						icon: 'images/pomodoro.png'
 						timeout: 10
-					.show()
+				notify.onclick = ->
+					window.focus()
+					@cancel()
+				notify.show()
 
 			# Permisin for system notifiactions
 			requestNotificationPermission = ->
@@ -131,14 +133,14 @@ angular.module('pomodoroApp')
 					return false
 
 			# Keep full window size
-			$scope.initializeWindowSize = ->
-				$scope.windowHeight = $window.innerHeight
-				$scope.windowWidth  = $window.innerWidth
-				if $window.innerHeight > 400
-					ratio = 0.2
-				else
-					ratio = 0.1
-				$scope.paddingTop = $window.innerHeight * ratio
+			# $scope.initializeWindowSize = ->
+			# 	$scope.windowHeight = $window.innerHeight
+			# 	$scope.windowWidth  = $window.innerWidth
+			# 	if $window.innerHeight > 400
+			# 		ratio = 0.2
+			# 	else
+			# 		ratio = 0.1
+			# 	$scope.paddingTop = $window.innerHeight * ratio
 
 			# Format timestamp to nice date format
 			$scope.formatCounter = (val) ->
@@ -162,10 +164,10 @@ angular.module('pomodoroApp')
 				$scope.isActive = !$scope.isActive
 
 			#
-			$scope.initializeWindowSize()
+			# $scope.initializeWindowSize()
 			setBackground 2
 
-			angular.element($window).bind 'resize', ->
-				$scope.initializeWindowSize()
-				$scope.$apply()
+			# angular.element($window).bind 'resize', ->
+			# 	$scope.initializeWindowSize()
+			# 	$scope.$apply()
 
