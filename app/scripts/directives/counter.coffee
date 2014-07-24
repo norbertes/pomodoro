@@ -14,8 +14,8 @@ angular.module('pomodoroApp')
 		controller: ($scope, $timeout, $window) ->
 			$scope.pomodoroTime = 60*25	# Pomodoro work time
 			$scope.shortBreak = 60*5 # Short break time
-			$scope.longBreak = 60*25 # Long break time
 			$scope.counter 	= $scope.pomodoroTime # Counter value (init = pomodoros work time)
+			$scope.longBreak = 60*25 # Long break time
 			$scope.isActive = true # If counter running?
 			$scope.timeTable = [] # Table for times of finish every block
 			mytimeout = false # Helper for counter
@@ -34,6 +34,7 @@ angular.module('pomodoroApp')
 				if val is 1
 					bgColor = 'rgb(33, 90, 112)' # '#12538B'
 				else if val is 2
+					localStorage.setItem 'workbg', $scope.workBg
 					bgColor = $scope.workBg
 				else if val is 3
 					bgColor = 'rgb(138, 48, 25)' #'#ec971f'
@@ -109,6 +110,7 @@ angular.module('pomodoroApp')
 
 			# Counter
 			countDown = ->
+				localStorage.setItem 'counter', $scope.counter
 				$scope.counter--
 				if $scope.counter > 0
 					mytimeout = $timeout countDown,1000
@@ -132,16 +134,6 @@ angular.module('pomodoroApp')
 				else
 					return false
 
-			# Keep full window size
-			# $scope.initializeWindowSize = ->
-			# 	$scope.windowHeight = $window.innerHeight
-			# 	$scope.windowWidth  = $window.innerWidth
-			# 	if $window.innerHeight > 400
-			# 		ratio = 0.2
-			# 	else
-			# 		ratio = 0.1
-			# 	$scope.paddingTop = $window.innerHeight * ratio
-
 			# Format timestamp to nice date format
 			$scope.formatCounter = (val) ->
 				mins = Math.floor val/60
@@ -163,11 +155,9 @@ angular.module('pomodoroApp')
 					stop()
 				$scope.isActive = !$scope.isActive
 
-			#
-			# $scope.initializeWindowSize()
-			setBackground 2
-
-			# angular.element($window).bind 'resize', ->
-			# 	$scope.initializeWindowSize()
-			# 	$scope.$apply()
-
+			# Retrive bgcolor from storage if possible
+			if localStorage.getItem('workbg')?
+				console.log "BG form LS #{localStorage.getItem('workbg')}"
+				$('body').css 'background', localStorage.getItem('workbg')
+			else
+				setBackground 2

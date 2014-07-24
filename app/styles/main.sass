@@ -27,7 +27,7 @@ h1
 	background-color: #12538B
 
 .bgcolor2
-	background-color: #449d44
+	background-color: #217021
 
 .bgcolor3
 	background-color: #414141
@@ -48,8 +48,10 @@ h1
 	height: 2em
 	font-size: 2em
 	outline: none
-	background-color: rgba(255,255,255,.025)
+	background-color: rgba(255,255,255,.0)
 	color: #FFF
+	span
+		color: rgba(0,0,0,.4)
 	&:hover,
 	&:focus,
 	&:active,
@@ -85,9 +87,11 @@ settings
 	+transition-duration(400ms)
 	+transition-timing-function(ease-in-out)
 
-	h2,h3
+	h2,
+	h3
 		text-align: center
 		width: 100%
+		font-weight: 100
 	div
 		width: 100%
 		float: left

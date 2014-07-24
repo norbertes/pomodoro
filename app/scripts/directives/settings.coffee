@@ -14,7 +14,7 @@ angular.module('pomodoroApp')
 		controller: ($scope) ->
 			settingsVisible = false
 			bgColor1 = '#12538B'
-			bgColor2 = 'rgb(33, 112, 33)'#'#449d44'
+			bgColor2 = '#217021'#'#449d44'
 			bgColor3 = '#414141'
 
 			$scope.volume = 75 # Notifications volume
