@@ -3,7 +3,7 @@ Pomodoro app
 
 This repo contains code for my own pomodoro app, which you can run in browser's tab.
 
-Pomodoro time 25 mints, short break 5 mints, long break 25 mints. Maybe someday it will be editable.
+Pomodoro time is 25 mints, short break is 5 mints, long break is 25 mints. Maybe someday it will be editable.
 
 When break/work time ends it:
 - shows notification popup 
@@ -15,4 +15,4 @@ Link to working example is available on [github.io](http://norbertes.github.io/p
 ![App screen](./screen.png)
 
 
-Yeah, so AWESOME, but it's workin for me.
+Yeah, so AWESOME, but it's workin for me. Just open link, click anywhere for start and work.
